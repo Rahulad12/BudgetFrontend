@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { BudgetSettings } from '../types';
+import type { BudgetData } from '../types';
 
-const initialState: BudgetSettings = {
-  monthlyIncome: 0,
-  monthlyBudget: 0,
-  warningThreshold: 80, // Default warning at 80% of budget
+const initialState: BudgetData = {
+  monthlyExpense: 0,
+  expensesThreshold: 0,
+  savingGoal: 0
 };
 
 const budgetSettingsSlice = createSlice({
   name: 'budgetSettings',
   initialState,
   reducers: {
-    updateBudgetSettings: (state, action: PayloadAction<Partial<BudgetSettings>>) => {
-      return { ...state, ...action.payload };
+    addBudget: (state, action: PayloadAction<Partial<BudgetData>>) => {
+      Object.assign(state, action.payload);
     },
   },
 });
 
-export const { updateBudgetSettings } = budgetSettingsSlice.actions;
+export const { addBudget } = budgetSettingsSlice.actions;
 export default budgetSettingsSlice.reducer;

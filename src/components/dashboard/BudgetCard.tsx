@@ -1,14 +1,14 @@
 import { ArrowUpCircle, ArrowDownCircle, AlertTriangle } from 'lucide-react';
-
 type BudgetCardProps = {
   title: string;
   amount: number;
   type: 'income' | 'expense' | 'balance';
   percentage?: number;
   alert?: boolean;
+  totalExpenseLeft?: number;
 };
 
-const BudgetCard = ({ title, amount, type, percentage, alert }: BudgetCardProps)=> {
+const BudgetCard = ({ title, amount, type, percentage, alert, totalExpenseLeft }: BudgetCardProps) => {
   const getIcon = () => {
     switch (type) {
       case 'income':
@@ -40,11 +40,21 @@ const BudgetCard = ({ title, amount, type, percentage, alert }: BudgetCardProps)
           {getIcon()}
         </div>
       </div>
-      
+
       <div className={`text-2xl font-bold ${getAmountColor()}`}>
         ${Math.abs(amount).toLocaleString()}
       </div>
-      
+
+      {
+        type === 'expense' && (
+          <div className="mt-4">
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-red-600 font-bold">Remaining Budget</span>
+              <span className="font-medium">${totalExpenseLeft}</span>
+            </div>
+          </div>
+        )}
+
       {percentage !== undefined && (
         <div className="mt-4">
           <div className="flex justify-between text-sm mb-1">
@@ -53,9 +63,8 @@ const BudgetCard = ({ title, amount, type, percentage, alert }: BudgetCardProps)
           </div>
           <div className="h-2 bg-gray-200 rounded-full">
             <div
-              className={`h-full rounded-full ${
-                percentage > 90 ? 'bg-red-600' : 'bg-blue-600'
-              }`}
+              className={`h-full rounded-full ${percentage > 90 ? 'bg-red-600' : 'bg-blue-600'
+                }`}
               style={{ width: `${percentage}%` }}
             />
           </div>

@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addTransaction } from '../store/transactionsSlice';
-import { Transaction } from '../types';
-import { TransactionFormData } from '../types';
-import { v4 as uuidv4 } from 'uuid';
+import { globalResponse, TransactionFormData } from '../types';
+import { createTransaction } from '../service/transaction';
+import { toast } from 'react-toastify';
 
 const AddTransaction = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<TransactionFormData>({
     title: '',
@@ -18,17 +15,23 @@ const AddTransaction = () => {
     date: new Date().toISOString().split('T')[0],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const res: globalResponse = await createTransaction(formData);
+      if (res?.success) {
+        toast.success(res.message);
+        navigate('/');
+      }
+      else {
+        throw Error(res.message)
+      }
+    } catch (error) {
+      console.log(error);
+      const res = (error as Error).message
+      toast.error(res);
+    }
 
-    const newTransaction: Transaction = {
-      ...formData,
-      id: uuidv4(), // Generating a unique ID for the transaction
-      amount: parseFloat(formData.amount.toString()),
-    };
-
-    dispatch(addTransaction(newTransaction)); // Dispatching the action
-    navigate('/'); // Redirect after submitting
   };
 
   return (

@@ -17,11 +17,19 @@ export type Transaction = {
   date: string;
 };
 
-export type BudgetSettings = {
-  monthlyIncome: number;
-  monthlyBudget: number;
-  warningThreshold: number;
+export type BudgetData = {
+  monthlyExpense: number;
+  expensesThreshold: number;
+  savingGoal: number;
 };
+
+export type budgetResponseType = BudgetData[]; // Since you're accessing `budget[0]`
+
+
+export type incomeResponseType = {
+  success: boolean;
+  totalIncome: number;
+}
 
 export type MonthlyData = {
   income: number;
@@ -35,3 +43,22 @@ export type CategoryBudget = {
   budget: number;
   spent: number;
 };
+
+export type globalResponse = {
+  success: boolean,
+  message: string,
+}
+
+export type authResponseType = {
+  success: boolean,
+  message: string,
+  token: string
+}
+export type authUser = {
+  username: string,
+  email: string,
+  password: string
+}
+
+
+

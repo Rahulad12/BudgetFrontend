@@ -13,8 +13,8 @@ const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
-    addTransaction: (state, action: PayloadAction<Transaction>) => {
-      state.items.push(action.payload);
+    addTransactions: (state, action: PayloadAction<Transaction[]>) => {
+      state.items = action.payload;
     },
     updateTransaction: (state, action: PayloadAction<Transaction>) => {
       const index = state.items.findIndex(t => t.id === action.payload.id);
@@ -28,5 +28,5 @@ const transactionsSlice = createSlice({
   },
 });
 
-export const { addTransaction, updateTransaction, deleteTransaction } = transactionsSlice.actions;
+export const { addTransactions, updateTransaction, deleteTransaction } = transactionsSlice.actions;
 export default transactionsSlice.reducer;
