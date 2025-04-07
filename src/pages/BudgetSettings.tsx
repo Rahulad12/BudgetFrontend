@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { createBudget } from '../service/budgetService';
 import { toast } from 'react-toastify';
-import { incomeResponseType } from "../types/index";
+import { BudgetData, incomeResponseType } from "../types/index";
 import { useDispatch, useSelector } from 'react-redux';
 import { getIncome } from '../service/incomeService';
 import { addIncome } from '../store/incomeSlice';
@@ -22,12 +22,12 @@ const BudgetSettings = () => {
     fetchIncome();
   }, [dispatch]);
 
-  const [formData, setFormData] = useState<any>({
-    monthlyExpenses: "",
+  const [formData, setFormData] = useState<BudgetData>({
+    monthlyExpense: 0,
     expensesThreshold: 50,
-    savingGoal: "",
+    savingGoal: 0,
   });
-  const isValidBudget = formData.monthlyExpenses <= monthlyIncome;
+  const isValidBudget = formData.monthlyExpense <= monthlyIncome;
   const isThresholdValid =
     formData.expensesThreshold >= 1 && formData.expensesThreshold <= 100;
 
@@ -67,9 +67,9 @@ const BudgetSettings = () => {
             <input
               type="number"
               id="monthlyExpenses"
-              value={formData.monthlyExpenses}
+              value={formData.monthlyExpense}
               onChange={(e) =>
-                setFormData({ ...formData, monthlyExpenses: Number(e.target.value) })
+                setFormData({ ...formData, monthlyExpense: Number(e.target.value) })
               }
               className="pl-7 block w-full rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter monthly expenses"

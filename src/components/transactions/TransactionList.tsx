@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
-import { MonthlyTransaction } from '../../types';
+import { useAppSelector } from "../../hooks/redux";
 
 const TransactionList = () => {
-  const transactions: MonthlyTransaction = useSelector((state: any) => state.transactions.items[0]);
-
+  const { items: transactions } = useAppSelector((state) => state.transactions);
+  
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
@@ -25,7 +24,7 @@ const TransactionList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {transactions?.transaction.map((transaction) => (
+            {transactions[0]?.transaction?.map((transaction) => (
               <tr key={transaction._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{new Date(transaction.date).toLocaleDateString()}</div>

@@ -1,5 +1,5 @@
 import { ArrowUpCircle, ArrowDownCircle, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
-
+import { useSelector } from 'react-redux';
 type BudgetCardProps = {
   title: string;
   amount: number;
@@ -21,8 +21,9 @@ const BudgetCard = ({
 }: BudgetCardProps) => {
   // Determine colors and icons based on card type
 
+  const calculatedDataState = useSelector((state: any) => state.calculatedData);
   const savingExceedForIcon = savingGoal && amount < savingGoal;
-  const budgetExceededIcon = totalExpenseLeft && totalExpenseLeft < 0;
+  const budgetExceededIcon = calculatedDataState?.isOverBudget;
   const cardConfig = {
     income: {
       icon: <ArrowUpCircle className="text-green-500" size={24} />,

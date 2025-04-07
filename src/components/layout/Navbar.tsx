@@ -31,6 +31,7 @@ const Navbar = () => {
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/add', icon: PlusCircle, label: 'Add' },
     { path: '/history', icon: History, label: 'History' },
+    { path: '/insights', icon: PieChart, label: 'Insights' },
     { path: '/settings', icon: Settings, label: 'Settings' },
   ];
 

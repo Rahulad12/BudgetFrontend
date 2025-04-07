@@ -10,6 +10,7 @@ import History from './pages/History';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './Routes/ProtectedRoute';
+import Insights from './pages/Insights';
 function App() {
   return (
     <Provider store={store}>
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/add" element={<AddTransaction />} />
               <Route path="/settings" element={<BudgetSettings />} />
+              <Route path="/insights" element={<Insights />} />
               <Route path="/history" element={<History />} />
             </Route>
           </Routes>

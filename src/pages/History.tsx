@@ -2,48 +2,23 @@ import { useEffect, useState } from 'react';
 import MonthSelector from '../components/history/MonthSelector';
 import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
-import { getFilterdTransaction } from "../service/transaction";
-import { MonthlyTransaction } from '../types';
-import { addMonthlyTransactions } from '../store/transactionsSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TransactionLoading from '../components/common/TransactionLoading';
+import { transactionFetch } from '../Fetch/transactionFetch';
 
 const History = () => {
-  const dispatch = useDispatch();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const transactions: MonthlyTransaction[] = useSelector((state: any) => state.transactions.items);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const date = new Date();
+  const [selectedDate, setSelectedDate] = useState(date);
+
+  const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
+  const calculatedData = transactions[0] || {};
+
 
   useEffect(() => {
-    const fetchHistoryTransactions = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const historyTransactions = await getFilterdTransaction(
-          selectedDate.toLocaleString('default', { month: 'long' })
-        );
-
-        if (historyTransactions?.success) {
-          dispatch(addMonthlyTransactions(historyTransactions.data));
-        } else {
-          throw new Error(historyTransactions?.message || 'Failed to fetch transactions');
-        }
-      } catch (error: any) {
-        console.error('Error fetching history transactions:', error);
-        setError(error.message || 'An unexpected error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHistoryTransactions();
+    dispatch(transactionFetch(selectedDate));
   }, [selectedDate, dispatch]);
 
-  const monthlyIncome = transactions[0]?.monthlyIncome || 0;
-  const monthlyExpenses = transactions[0]?.monthlyExpense || 0;
-  const savings = transactions[0]?.monthlyBalance || 0;
 
   if (loading) {
     return (
@@ -78,9 +53,9 @@ const History = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <BudgetCard title="Total Income" amount={monthlyIncome} type="income" />
-            <BudgetCard title="Total Expenses" amount={monthlyExpenses} type="expense" />
-            <BudgetCard title="Savings" amount={savings} type="balance" />
+            <BudgetCard title="Total Income" amount={calculatedData?.monthlyIncome} type="income" />
+            <BudgetCard title="Total Expenses" amount={calculatedData?.monthlyExpense} type="expense" />
+            <BudgetCard title="Savings" amount={calculatedData?.monthlyBalance} type="balance" />
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6">

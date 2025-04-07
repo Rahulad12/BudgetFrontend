@@ -41,7 +41,7 @@ export type MonthlyTransactionResponse = {
 }
 
 export type BudgetData = {
-  monthlyExpenses: number;
+  monthlyExpense: number;
   expensesThreshold: number;
   savingGoal: number;
 };
@@ -84,4 +84,13 @@ export type authUser = {
 }
 
 
+export type calculateDataType = {
+  monthlyIncome: number;
+  monthlyExpenses: number;
+  balance: number;
+  totalExpenseLeft: number;
+  expenseRatio: number;
+  isSavingGoalExceed: boolean;
+  isOverBudget: boolean;
+}
 

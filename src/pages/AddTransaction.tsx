@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { globalResponse, TransactionFormData } from '../types';
-import { createTransaction } from '../service/transaction';
+import { createTransaction } from '../service/transactionService';
 import { toast } from 'react-toastify';
 
 const AddTransaction = () => {
