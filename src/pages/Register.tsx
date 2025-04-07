@@ -21,6 +21,7 @@ const Register = () => {
             const res = await registerUser(data.username, data.email, data.password);
             if (res.success) {
                 toast.success(res.message);
+                navigate('/login');
             }
             else {
                 throw new Error(res.message)

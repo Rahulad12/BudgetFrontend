@@ -1,24 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import MonthSelector from '../components/history/MonthSelector';
 import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TransactionLoading from '../components/common/TransactionLoading';
 import { transactionFetch } from '../Fetch/transactionFetch';
+import calculateData from '../utils/calculateData';
 
 const History = () => {
   const dispatch = useAppDispatch();
   const date = new Date();
   const [selectedDate, setSelectedDate] = useState(date);
 
-  const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
-  const calculatedData = transactions[0] || {};
-
-
   useEffect(() => {
     dispatch(transactionFetch(selectedDate));
   }, [selectedDate, dispatch]);
 
+  const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
+  const budgetState = useAppSelector((state) => state.budgetSettings);
+
+  const calculatedData = useMemo(() => {
+    return calculateData(transactions[0] || {}, budgetState || {});
+  }, [transactions, budgetState]);
 
   if (loading) {
     return (
@@ -53,9 +56,26 @@ const History = () => {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <BudgetCard title="Total Income" amount={calculatedData?.monthlyIncome} type="income" />
-            <BudgetCard title="Total Expenses" amount={calculatedData?.monthlyExpense} type="expense" />
-            <BudgetCard title="Savings" amount={calculatedData?.monthlyBalance} type="balance" />
+            <BudgetCard
+              title="Monthly Income"
+              amount={calculatedData?.monthlyIncome}
+              type="income"
+            />
+            <BudgetCard
+              title="Monthly Expenses"
+              amount={calculatedData?.monthlyExpenses}
+              type="expense"
+              percentage={calculatedData?.expenseRatio}
+              totalExpenseLeft={calculatedData?.totalExpenseLeft}
+              alert={calculatedData?.isOverBudget}
+            />
+            <BudgetCard
+              title="Remaining Balance"
+              amount={calculatedData?.balance}
+              type="balance"
+              alert={calculatedData?.isSavingGoalExceed}
+              savingGoal={budgetState?.savingGoal}
+            />
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6">
