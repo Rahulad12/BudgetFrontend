@@ -3,7 +3,6 @@ import { MonthlyTransaction } from '../../types';
 
 const TransactionList = () => {
   const transactions: MonthlyTransaction = useSelector((state: any) => state.transactions.items[0]);
-  console.log(transactions?.transaction);
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">

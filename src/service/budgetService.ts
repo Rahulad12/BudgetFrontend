@@ -5,9 +5,10 @@ import { BUDGET_URL } from "./constant";
 
 
 const createBudget = async (formData: BudgetData): Promise<globalResponse> => {
+    console.log(formData);
     try {
         const res = await api.post<globalResponse>(`${BUDGET_URL}`, {
-            monthlyexpense: formData.monthlyExpense, expensethreshold: formData.expensesThreshold, savinggoal: formData.savingGoal
+            monthlyexpense: formData.monthlyExpenses, expensethreshold: formData.expensesThreshold, savinggoal: formData.savingGoal
         });
         return res.data;
     } catch (error: any) {

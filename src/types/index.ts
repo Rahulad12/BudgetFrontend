@@ -1,3 +1,9 @@
+
+//error
+export type ErrorType = {
+  success: boolean;
+  message: string;
+}
 export type TransactionType = 'income' | 'expense';
 
 export type TransactionFormData = {
@@ -30,11 +36,12 @@ export type MonthlyTransaction = {
 
 export type MonthlyTransactionResponse = {
   success: boolean,
-  message: string
-  data: MonthlyTransaction[];
+  message: string;
+  data: MonthlyTransaction[]
 }
+
 export type BudgetData = {
-  monthlyExpense: number;
+  monthlyExpenses: number;
   expensesThreshold: number;
   savingGoal: number;
 };

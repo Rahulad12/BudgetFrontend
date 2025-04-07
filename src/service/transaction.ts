@@ -1,5 +1,5 @@
 import { TRANSACTION_URL, MONTHLY_TRANSACTION_URL } from "./constant";
-import { globalResponse, TransactionFormData, Transaction, MonthlyTransactionResponse } from "../types";
+import { globalResponse, TransactionFormData, Transaction, MonthlyTransactionResponse} from "../types";
 import api from "./api";
 
 export const createTransaction = async (
@@ -15,9 +15,9 @@ export const createTransaction = async (
 };
 
 
-export const getTransaction = async (): Promise<Transaction[]> => {
+export const getTransaction = async (): Promise<Transaction> => {
     try {
-        const res = await api.get<Transaction[]>(`${TRANSACTION_URL}`);
+        const res = await api.get<Transaction>(`${TRANSACTION_URL}`);
         return res.data;
     } catch (error: any) {
         console.error(error);
@@ -25,9 +25,9 @@ export const getTransaction = async (): Promise<Transaction[]> => {
     }
 };
 
-export const getMonthlyTransaction = async (): Promise<MonthlyTransactionResponse[]> => {
+export const getMonthlyTransaction = async (): Promise<MonthlyTransactionResponse> => {
     try {
-        const res = await api.get<MonthlyTransactionResponse[]>(`${MONTHLY_TRANSACTION_URL}`);
+        const res = await api.get<MonthlyTransactionResponse>(`${MONTHLY_TRANSACTION_URL}`);
         console.log(res.data);
         return res.data;
     } catch (error: any) {
@@ -36,11 +36,11 @@ export const getMonthlyTransaction = async (): Promise<MonthlyTransactionRespons
     }
 };
 
-export const getFilterdTransaction = async (month: string): Promise<MonthlyTransactionResponse[]> => {
+export const getFilterdTransaction = async (month: string): Promise<MonthlyTransactionResponse> => {
     try {
-        const res = await api.get<MonthlyTransactionResponse[]>(`${MONTHLY_TRANSACTION_URL}/filter?month=${month}`);
+        const res = await api.get<MonthlyTransactionResponse>(`${MONTHLY_TRANSACTION_URL}/filter?month=${month}`);
         return res.data
-    } catch (error: any) {
+    } catch (error:any ) {
         console.error(error);
         throw error.response?.data || error;
     }

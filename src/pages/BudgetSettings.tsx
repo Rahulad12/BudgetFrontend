@@ -24,13 +24,12 @@ const BudgetSettings = () => {
 
   const [formData, setFormData] = useState<any>({
     monthlyExpenses: "",
-    exponsesThreshold: 50,
+    expensesThreshold: 50,
     savingGoal: "",
   });
-console.log(formData.monthlyExpenses, typeof formData.monthlyExpenses);
   const isValidBudget = formData.monthlyExpenses <= monthlyIncome;
   const isThresholdValid =
-    formData.exponsesThreshold >= 1 && formData.exponsesThreshold <= 100;
+    formData.expensesThreshold >= 1 && formData.expensesThreshold <= 100;
 
   const isFormValid = isValidBudget && isThresholdValid;
 
@@ -114,9 +113,9 @@ console.log(formData.monthlyExpenses, typeof formData.monthlyExpenses);
           <input
             type="number"
             id="warningThreshold"
-            value={formData.exponsesThreshold}
+            value={formData.expensesThreshold}
             onChange={(e) =>
-              setFormData({ ...formData, exponsesThreshold: Number(e.target.value) })
+              setFormData({ ...formData, expensesThreshold: Number(e.target.value) })
             }
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             min="1"
