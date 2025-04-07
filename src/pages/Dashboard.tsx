@@ -1,13 +1,11 @@
 import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
 import { AlertTriangle } from 'lucide-react';
-import { getTransaction } from '../service/transaction';
+import { getMonthlyTransaction } from '../service/transaction';
 import { useEffect } from 'react';
-import { Transaction, incomeResponseType, BudgetData, budgetResponseType } from '../types';
+import { MonthlyTransaction } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTransactions } from '../store/transactionsSlice';
-import { addIncome } from '../store/incomeSlice';
-import { getIncome } from '../service/incomeService';
+import { addMonthlyTransactions } from '../store/transactionsSlice';
 import { getBudget } from '../service/budgetService';
 import { addBudget } from '../store/budgetSettingsSlice';
 
@@ -15,21 +13,18 @@ import { addBudget } from '../store/budgetSettingsSlice';
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const transactions: Transaction[] = useSelector((state: any) => state.transactions.items);
-  const income: incomeResponseType = useSelector((state: any) => state.income);
+  const transactions: MonthlyTransaction = useSelector((state: any) => state.transactions.items[0]);
+  console.log(transactions);
   const budgetState = useSelector((state: any) => state.budgetSettings);
 
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        const [transactions, income, budget] = await Promise.all([
-          getTransaction(),
-          getIncome(),
+        const [monthlyTransactions, budget] = await Promise.all([
+          getMonthlyTransaction(),
           getBudget(),
         ]);
-
-        dispatch(addTransactions(transactions));
-        dispatch(addIncome(income));
+        dispatch(addMonthlyTransactions(monthlyTransactions.data));
         dispatch(addBudget(budget[0])); // First element
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -39,17 +34,12 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [dispatch]);
 
-  const monthlyExpenses = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const monthlyIncome = income?.totalIncome || 0;
-  const budgetThisMonth = budgetState?.monthlyExpense || 0;
-  const balance = monthlyIncome - monthlyExpenses;
-  const expenseRatio = monthlyIncome ? (monthlyExpenses / monthlyIncome) * 100 : 0;
-  const isOverBudget = monthlyExpenses > budgetThisMonth;
-  const totalExpenseLeft = budgetThisMonth - monthlyExpenses;
-
+  const monthlyIncome = transactions.monthlyIncome;
+  const monthlyExpenses = transactions.monthlyExpense;
+  const balance = transactions.monthlyBalance;
+  const totalExpenseLeft = monthlyExpenses - budgetState.monthlyExpenses;
+  const expenseRatio = (monthlyExpenses / budgetState.monthlyExpenses) * 100;
+  const isOverBudget = expenseRatio > budgetState.expensesThreshold;
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">

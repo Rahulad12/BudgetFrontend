@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import AddTransaction from './pages/AddTransaction';
-import Insights from './pages/Insights';
 import BudgetSettings from './pages/BudgetSettings';
 import History from './pages/History';
 import Login from './pages/Login';
@@ -22,7 +21,6 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/add" element={<AddTransaction />} />
-              <Route path="/insights" element={<Insights />} />
               <Route path="/settings" element={<BudgetSettings />} />
               <Route path="/history" element={<History />} />
             </Route>

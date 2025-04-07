@@ -30,7 +30,6 @@ const Navbar = () => {
   const authNavItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/add', icon: PlusCircle, label: 'Add' },
-    { path: '/insights', icon: PieChart, label: 'Insights' },
     { path: '/history', icon: History, label: 'History' },
     { path: '/settings', icon: Settings, label: 'Settings' },
   ];

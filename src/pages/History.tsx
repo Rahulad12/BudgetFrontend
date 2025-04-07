@@ -1,30 +1,39 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store';
+import { useEffect, useState } from 'react';
 import MonthSelector from '../components/history/MonthSelector';
 import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
+import { getFilterdTransaction } from "../service/transaction"
+import { MonthlyTransaction } from '../types';
+import { addMonthlyTransactions } from '../store/transactionsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const History = () => {
+  const dispatch = useDispatch();
+
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const transactions = useSelector((state: RootState) => state.transactions.items);
+  const transactions: MonthlyTransaction[] = useSelector((state: any) => state.transactions.items);
 
-  // Filter transactions for selected month
-  const selectedMonthTransactions = transactions.filter(transaction => {
-    const transDate = new Date(transaction.date);
-    return transDate.getMonth() === selectedDate.getMonth() &&
-      transDate.getFullYear() === selectedDate.getFullYear();
-  });
+  console.log(transactions);
+  useEffect(() => {
+    const fetchHistoryTransactions = async () => {
+      try {
+        const historyTransactions = await getFilterdTransaction(selectedDate.toLocaleString('default', { month: 'long' }));
+        if (historyTransactions?.success) {
+        } dispatch(addMonthlyTransactions(historyTransactions.data));
 
-  const monthlyIncome = selectedMonthTransactions
-    .filter(t => t.type === 'income')
-    .reduce((sum, t) => sum + t.amount, 0);
+      } catch (error) {
+        console.error('Error fetching history transactions:', error);
+      }
+    };
 
-  const monthlyExpenses = selectedMonthTransactions
-    .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + t.amount, 0);
+    fetchHistoryTransactions();
+  }, [selectedDate]);
 
-  const savings = monthlyIncome - monthlyExpenses;
+
+  const monthlyIncome = transactions[0]?.monthlyIncome;
+  const monthlyExpenses = transactions[0]?.monthlyExpense;
+  const savings = transactions[0]?.monthlyBalance;
+
 
   return (
     <div className="space-y-6">
@@ -59,13 +68,7 @@ const History = () => {
         <h2 className="text-xl font-semibold text-gray-900 mb-4">
           Transactions
         </h2>
-        {selectedMonthTransactions.length > 0 ? (
-          <TransactionList />
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            No transactions found for this month
-          </div>
-        )}
+        <TransactionList />
       </div>
     </div>
   );

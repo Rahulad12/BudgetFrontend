@@ -1,4 +1,5 @@
 export const AUTH_URL = 'auth'
 export const TRANSACTION_URL = 'transactions'
+export const MONTHLY_TRANSACTION_URL = 'monthlyTransactions'
 export const BUDGET_URL = 'budgets'
 export const INCOME_URL = 'incomes'

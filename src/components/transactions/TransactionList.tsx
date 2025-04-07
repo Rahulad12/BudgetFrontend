@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux';
-import { Transaction } from '../../types';
+import { MonthlyTransaction } from '../../types';
 
 const TransactionList = () => {
-  const transactions: Transaction[] = useSelector((state: any) => state.transactions.items);
+  const transactions: MonthlyTransaction = useSelector((state: any) => state.transactions.items[0]);
+  console.log(transactions?.transaction);
+
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
@@ -24,22 +26,28 @@ const TransactionList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(transaction.date).toLocaleDateString()}
+            {transactions?.transaction.map((transaction) => (
+              <tr key={transaction._id}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{new Date(transaction.date).toLocaleDateString()}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {transaction.title}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{transaction.title}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {transaction.category}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{transaction.category}</div>
                 </td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                  {transaction.type === 'income' ? '+' : '-'}${Math.abs(transaction.amount).toLocaleString()}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{
+                    transaction.type === 'income' ? (
+                      <span className="text-green-700 font-bold">+${transaction.amount}</span>
+                    ) : (
+                      <span className="text-red-500 font-bold">-${transaction.amount}</span>
 
+                    )
+                  }
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

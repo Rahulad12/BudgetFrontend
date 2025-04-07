@@ -9,7 +9,7 @@ export type TransactionFormData = {
 };
 
 export type Transaction = {
-  id: string;
+  _id: string;
   title: string;
   amount: number;
   type: TransactionType;
@@ -17,13 +17,29 @@ export type Transaction = {
   date: string;
 };
 
+
+export type MonthlyTransaction = {
+  monthlyBalance: number;
+  monthlyIncome: number;
+  monthlyExpense: number;
+  date: string;
+  month: string;
+  monthYear: string
+  transaction: Transaction[];
+}
+
+export type MonthlyTransactionResponse = {
+  success: boolean,
+  message: string
+  data: MonthlyTransaction[];
+}
 export type BudgetData = {
   monthlyExpense: number;
   expensesThreshold: number;
   savingGoal: number;
 };
 
-export type budgetResponseType = BudgetData[]; // Since you're accessing `budget[0]`
+export type budgetResponseType = BudgetData[];
 
 
 export type incomeResponseType = {
