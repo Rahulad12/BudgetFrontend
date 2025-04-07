@@ -34,12 +34,12 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [dispatch]);
 
-  const monthlyIncome = transactions.monthlyIncome;
-  const monthlyExpenses = transactions.monthlyExpense;
-  const balance = transactions.monthlyBalance;
-  const totalExpenseLeft = monthlyExpenses - budgetState.monthlyExpenses;
-  const expenseRatio = (monthlyExpenses / budgetState.monthlyExpenses) * 100;
-  const isOverBudget = expenseRatio > budgetState.expensesThreshold;
+  const monthlyIncome = transactions?.monthlyIncome;
+  const monthlyExpenses = transactions?.monthlyExpense;
+  const balance = transactions?.monthlyBalance;
+  const totalExpenseLeft = monthlyExpenses - budgetState?.monthlyExpenses;
+  const expenseRatio = (monthlyExpenses / budgetState?.monthlyExpenses) * 100;
+  const isOverBudget = expenseRatio > budgetState?.expensesThreshold;
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">

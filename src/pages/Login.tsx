@@ -5,15 +5,19 @@ import { login } from '../store/authSlice';
 import { loginUser } from '../service/authService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const isLoggedIn = useSelector((state: any) => state.auth.auth.token);
-    if (isLoggedIn) {
-        navigate('/');
-    }
+    const token = useSelector((state: any) => state.auth.auth.token);
+    // Check auth status on component mount
+    useEffect(() => {
+        if (token) {
+            navigate('/');
+        }
+    }, [token, navigate]);
 
     const submitHandler = async (data: authUser) => {
         try {
