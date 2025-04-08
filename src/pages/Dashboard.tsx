@@ -7,7 +7,7 @@ import TransactionLoading from '../components/common/TransactionLoading';
 import { transactionFetch } from '../Fetch/transactionFetch';
 import calculateData from '../utils/calculateData';
 import { calculateDataState } from "../store/caculcatedDataSlice"
-
+import { getBudgetFetch } from "../Fetch/budgetFetch";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(transactionFetch(currentDate));
     dispatch(calculateDataState(calculatedData));
+    getBudgetFetch(dispatch);
   }, [dispatch, currentDate]);
 
   if (loading) {
@@ -71,6 +72,18 @@ const Dashboard = () => {
           type="balance"
           alert={calculatedData?.isSavingGoalExceed}
           savingGoal={budgetState?.savingGoal}
+        />
+        <BudgetCard
+          title="Set Budget"
+          amount={budgetState?.monthlyExpense}
+          type="budget"
+          alert={calculatedData?.isOverBudget}
+        />
+        <BudgetCard
+          title="Set Saving Goal"
+          amount={budgetState?.savingGoal}
+          type="saving"
+          alert={calculatedData?.isSavingGoalExceed}
         />
       </div>
 

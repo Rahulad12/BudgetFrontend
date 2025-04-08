@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TransactionLoading from '../components/common/TransactionLoading';
 import { transactionFetch } from '../Fetch/transactionFetch';
 import calculateData from '../utils/calculateData';
+import { getBudgetFetch } from '../Fetch/budgetFetch';
 
 const History = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ const History = () => {
 
   useEffect(() => {
     dispatch(transactionFetch(selectedDate));
+    getBudgetFetch(dispatch);
   }, [selectedDate, dispatch]);
 
   const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
@@ -46,12 +48,6 @@ const History = () => {
       {error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
           <span className="block sm:inline">{error}</span>
-          <button
-            onClick={() => window.location.reload()}
-            className="absolute top-0 bottom-0 right-0 px-4 py-3"
-          >
-            Retry
-          </button>
         </div>
       ) : (
         <>

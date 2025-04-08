@@ -11,8 +11,10 @@ const budgetSettingsSlice = createSlice({
   name: 'budgetSettings',
   initialState,
   reducers: {
-    addBudget: (state, action: PayloadAction<Partial<BudgetData>>) => {
-      Object.assign(state, action.payload);
+    addBudget: (state, action: PayloadAction<BudgetData>) => {
+      state.monthlyExpense = action.payload.monthlyExpense
+      state.expensesThreshold = action.payload.expensesThreshold;
+      state.savingGoal = action.payload.savingGoal;
     },
   },
 });

@@ -4,6 +4,7 @@ import budgetSettingsReducer from './budgetSettingsSlice';
 import authReducer from './authSlice';
 import incomeReducer from './incomeSlice';
 import calculatedDataReducer from './caculcatedDataSlice';
+import loadingReducer from "../store/loadingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     budgetSettings: budgetSettingsReducer,
     auth: authReducer,
     income: incomeReducer,
-    calculatedData: calculatedDataReducer
+    calculatedData: calculatedDataReducer,
+    loading: loadingReducer
   },
 });
 

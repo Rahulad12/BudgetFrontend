@@ -3,12 +3,13 @@ import { AlertTriangle } from 'lucide-react';
 import { createBudget } from '../service/budgetService';
 import { toast } from 'react-toastify';
 import { BudgetData, incomeResponseType } from "../types/index";
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch,useAppSelector } from '../hooks/redux';
 import { getIncome } from '../service/incomeService';
 import { addIncome } from '../store/incomeSlice';
+import { addBudget } from '../store/budgetSettingsSlice';
 const BudgetSettings = () => {
-  const dispatch = useDispatch();
-  const monthlyIncome = useSelector((state: any) => state.income.totalIncome);
+  const dispatch = useAppDispatch();
+  const monthlyIncome = useAppSelector((state: any) => state.income.totalIncome);
 
   useEffect(() => {
     async function fetchIncome() {
@@ -40,6 +41,7 @@ const BudgetSettings = () => {
       const data = await createBudget(formData);
       if (data?.success) {
         toast.success(data.message);
+        dispatch(addBudget(formData));
       } else {
         throw new Error(data?.message || 'Unknown error');
       }

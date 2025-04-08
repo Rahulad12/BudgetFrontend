@@ -16,4 +16,11 @@ api.interceptors.request.use((config) => {
     return config;
 })
 
+api.interceptors.response.use((response) => {
+    if (response.status === 401 || response.status === 403 || response.status === 500) {
+        localStorage.removeItem("token");
+    }
+    return response
+})
+
 export default api;

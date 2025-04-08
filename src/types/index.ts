@@ -46,9 +46,6 @@ export type BudgetData = {
   savingGoal: number;
 };
 
-export type budgetResponseType = BudgetData[];
-
-
 export type incomeResponseType = {
   success: boolean;
   totalIncome: number;
