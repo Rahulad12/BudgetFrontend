@@ -4,9 +4,9 @@ import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TransactionLoading from '../components/common/TransactionLoading';
-import { transactionFetch } from '../Fetch/transactionFetch';
+import { transactionFetch } from '../Actions/transactionFetch';
 import calculateData from '../utils/calculateData';
-import { getBudgetFetch } from '../Fetch/budgetFetch';
+import { getBudgetFetch } from '../Actions/budgetFetch';
 
 const History = () => {
   const dispatch = useAppDispatch();

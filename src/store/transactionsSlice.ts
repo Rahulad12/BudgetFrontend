@@ -30,9 +30,12 @@ const transactionsSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
+    clearTransaction: () => {
+     return initialState;
+    },
 
   },
 });
 
-export const { addMonthlyTransactions, addMonthlyTransactionsError, setTransactionsLoading } = transactionsSlice.actions;
+export const { addMonthlyTransactions, addMonthlyTransactionsError, setTransactionsLoading,clearTransaction } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

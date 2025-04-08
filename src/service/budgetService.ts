@@ -1,11 +1,10 @@
-import {  globalResponse, BudgetData} from "../types";
+import {  globalResponse, BudgetData,budgetResponseType} from "../types";
 
 import api from "./api";
 import { BUDGET_URL } from "./constant";
 
 
 const createBudget = async (formData: BudgetData): Promise<globalResponse> => {
-    console.log(formData);
     try {
         const res = await api.post<globalResponse>(`${BUDGET_URL}`, {
             monthlyexpense: formData.monthlyExpense, expensethreshold: formData.expensesThreshold, savinggoal: formData.savingGoal
@@ -17,9 +16,9 @@ const createBudget = async (formData: BudgetData): Promise<globalResponse> => {
     }
 };
 
-const getBudget = async (): Promise<BudgetData> => {
+const getBudget = async (): Promise<budgetResponseType> => {
     try {
-        const res = await api.get<BudgetData>(`${BUDGET_URL}`);
+        const res = await api.get<budgetResponseType>(`${BUDGET_URL}`);
         return res.data;
     } catch (error: any) {
         console.error(error);

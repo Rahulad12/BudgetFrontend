@@ -45,6 +45,7 @@ export type BudgetData = {
   expensesThreshold: number;
   savingGoal: number;
 };
+export type budgetResponseType = BudgetData[];
 
 export type incomeResponseType = {
   success: boolean;

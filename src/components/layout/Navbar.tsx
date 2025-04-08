@@ -9,16 +9,13 @@ import {
   UserCircle,
   Wallet
 } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { LogOut } from '../../store/authSlice';
-import { clearBudget } from '../../store/budgetSettingsSlice';
-import { clearCalculatedData } from '../../store/caculcatedDataSlice';
-clearCalculatedData
+import { useAppDispatch } from '../../hooks/redux';
+import { logoutUserAction } from '@/Actions/logoutAction';
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const storedToken = localStorage.getItem('token');
 
   // Updated to match nested dashboard routes
@@ -29,10 +26,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(LogOut());
-    dispatch(clearBudget());
-    dispatch(clearCalculatedData())
-    localStorage.removeItem('token');
+    logoutUserAction(dispatch);
     navigate('/login');
   };
 
