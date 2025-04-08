@@ -1,6 +1,6 @@
 import api from "./api";
 import { AUTH_URL } from "./constant";
-import { authResponseType, globalResponse } from "../types";
+import { authResponseType, getUserResponse, globalResponse } from "../types";
 
 const loginUser = async (username: string, password: string): Promise<authResponseType> => {
     try {
@@ -34,4 +34,39 @@ const registerUser = async (
     }
 };
 
-export { loginUser, registerUser };
+const getUser = async (): Promise<getUserResponse> => {
+    try {
+        const reponse = await api.get<getUserResponse>(`${AUTH_URL}/user`);
+        return reponse.data
+    } catch (error: any) {
+        console.error(error);
+        throw error.response?.data || error;
+    }
+}
+const updateUser = async (username: string, email: string): Promise<globalResponse> => {
+    try {
+        const response = await api.put<globalResponse>(`${AUTH_URL}/user/update`, {
+            username,
+            email
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error(error);
+        throw error.response?.data || error;
+    }
+}
+
+const passwordChange = async (currentpassword: string, password: string): Promise<globalResponse> => {
+    try {
+        const response = await api.put<globalResponse>(`${AUTH_URL}/user/password`, {
+            currentpassword,
+            password
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error(error);
+        throw error.response?.data || error;
+    }
+}
+
+export { loginUser, registerUser, getUser, updateUser, passwordChange };

@@ -91,3 +91,14 @@ export type calculateDataType = {
   isOverBudget: boolean;
 }
 
+export type getUserResponse = {
+  success: boolean,
+  message: string,
+  data: {
+    _id: string,
+    username: string,
+    email: string
+  }
+}
+
+

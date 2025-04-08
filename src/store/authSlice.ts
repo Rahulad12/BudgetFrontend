@@ -3,9 +3,16 @@ import { authResponseType } from "../types"
 
 interface authState {
     auth: authResponseType
+    user: {
+        username: string
+        email: string
+    }
     loading: boolean
 }
-
+interface userState {
+    username: string,
+    email: string
+}
 const storedToken: any = localStorage.getItem("token")
 
 const initialState: authState = {
@@ -13,6 +20,10 @@ const initialState: authState = {
         success: false,
         message: '',
         token: storedToken,
+    },
+    user: {
+        username: '',
+        email: ''
     },
     loading: false
 }
@@ -25,6 +36,9 @@ const authSlice = createSlice({
             state.auth = action.payload.auth
             state.loading = action.payload.loading
         },
+        user: (state, action: PayloadAction<userState>) => {
+            state.user = action.payload
+        },
         LogOut: (state) => {
             state.auth = {
                 success: false,
@@ -36,7 +50,7 @@ const authSlice = createSlice({
         }
     }
 })
-export const { login, LogOut } = authSlice.actions
+export const { login, user, LogOut } = authSlice.actions
 export default authSlice.reducer
 
 

@@ -2,12 +2,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   PlusCircle,
-  PieChart,
-  Settings,
   History,
   Key,
   UserPlus,
-  LogInIcon
+  LogInIcon,
+  UserCircle,
+  Wallet
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { LogOut } from '../../store/authSlice';
@@ -31,8 +31,8 @@ const Navbar = () => {
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/add', icon: PlusCircle, label: 'Add' },
     { path: '/history', icon: History, label: 'History' },
-    { path: '/insights', icon: PieChart, label: 'Insights' },
-    { path: '/settings', icon: Settings, label: 'Settings' },
+    { path: '/settings', icon: Wallet, label: 'Set Budget' },
+    { path: '/profile', icon: UserCircle, label: '' },
   ];
 
   const guestNavItems = [
@@ -46,7 +46,7 @@ const Navbar = () => {
     <nav className="bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="font-bold text-xl">Budget Planner</Link>
+          <Link to="/" className="font-bold text-xl">Mero Budget</Link>
 
           <div className="hidden md:flex space-x-4 items-center">
             {navToRender.map(({ path, icon: Icon, label }) => (
@@ -63,7 +63,7 @@ const Navbar = () => {
             {storedToken && (
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-3 py-2 rounded-md bg-red-400 text-white hover:bg-red-700 transition"
+                className="flex items-center space-x-2 px-2 py-1 rounded-md bg-red-400 text-white hover:bg-red-700 transition"
               >
                 <LogInIcon size={20} />
                 <span>Logout</span>

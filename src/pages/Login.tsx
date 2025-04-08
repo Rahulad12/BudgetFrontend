@@ -1,17 +1,18 @@
 import Form from '../components/common/Form';
 import { authUser } from '../types';
-import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/authSlice';
 import { loginUser } from '../service/authService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import { loginFormValidator } from '../utils/formValidator';
+import { setLoading } from '../store/loadingSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 const Login = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const token = useSelector((state: any) => state.auth.auth.token);
+    const token = useAppSelector((state: any) => state.auth.auth.token);
     // Check auth status on component mount
     useEffect(() => {
         if (token) {
@@ -20,6 +21,13 @@ const Login = () => {
     }, [token, navigate]);
 
     const submitHandler = async (data: authUser) => {
+        dispatch(setLoading(true));
+        const validation = loginFormValidator(data.username, data.password);
+        if (validation) {
+            toast.error(validation);
+            dispatch(setLoading(false));
+            return;
+        }
         try {
             // Start loading
             dispatch(login({ auth: { success: false, message: '', token: '' }, loading: true }));
@@ -32,7 +40,7 @@ const Login = () => {
                     auth: res,
                     loading: false
                 }));
-
+                dispatch(setLoading(false));
                 toast.success(res.message);
 
                 // Redirect after short delay
@@ -40,9 +48,11 @@ const Login = () => {
                     navigate('/');
                 }, 1000);
             } else {
+                dispatch(setLoading(false));
                 throw new Error(res.message);
             }
         } catch (error) {
+            dispatch(setLoading(false));
             const errMsg = (error as Error).message;
             console.log(errMsg);
             toast.error(errMsg);
@@ -57,7 +67,7 @@ const Login = () => {
 
     return (
         <div>
-            <Form submitHandler={submitHandler} />
+            <Form submitHandler={submitHandler} formType='login' />
         </div>
     );
 };
