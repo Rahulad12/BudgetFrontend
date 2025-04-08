@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { authResponseType } from "../types"
 
+
+interface userState {
+    username: string,
+    email: string
+}
+
 interface authState {
     auth: authResponseType
     user: {
         username: string
         email: string
     }
-    loading: boolean
-}
-interface userState {
-    username: string,
-    email: string
 }
 const storedToken: any = localStorage.getItem("token")
 
@@ -25,16 +26,15 @@ const initialState: authState = {
         username: '',
         email: ''
     },
-    loading: false
 }
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<authState>) => {
-            state.auth = action.payload.auth
-            state.loading = action.payload.loading
+        login: (state, action: PayloadAction<authResponseType>) => {
+            state.auth = action.payload
+
         },
         user: (state, action: PayloadAction<userState>) => {
             state.user = action.payload
@@ -45,7 +45,6 @@ const authSlice = createSlice({
                 message: '',
                 token: ''
             }
-            state.loading = false
             localStorage.removeItem("token")
         }
     }

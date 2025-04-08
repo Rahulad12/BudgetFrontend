@@ -16,8 +16,13 @@ const budgetSettingsSlice = createSlice({
       state.expensesThreshold = action.payload.expensesThreshold;
       state.savingGoal = action.payload.savingGoal;
     },
+    clearBudget: (state) => {
+      state.monthlyExpense = 0;
+      state.expensesThreshold = 0;
+      state.savingGoal = 0;
+    },
   },
 });
 
-export const { addBudget } = budgetSettingsSlice.actions;
+export const { addBudget,clearBudget } = budgetSettingsSlice.actions;
 export default budgetSettingsSlice.reducer;

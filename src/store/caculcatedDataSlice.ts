@@ -33,8 +33,17 @@ const calculatedDataSlice = createSlice({
             state.isSavingGoalExceed = isSavingGoalExceed;
             state.isOverBudget = isOverBudget;  
         },
+        clearCalculatedData: (state) => {
+            state.monthlyIncome = 0;
+            state.monthlyExpenses = 0;
+            state.balance = 0;
+            state.totalExpenseLeft = 0;
+            state.expenseRatio = 0;
+            state.isSavingGoalExceed = false;
+            state.isOverBudget = false;
+        }
     },
 });
 
-export const { calculateDataState } = calculatedDataSlice.actions;
+export const { calculateDataState,clearCalculatedData } = calculatedDataSlice.actions;
 export default calculatedDataSlice.reducer;
