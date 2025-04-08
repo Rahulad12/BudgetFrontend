@@ -6,8 +6,9 @@ import { BudgetData, incomeResponseType } from "../types/index";
 import { useAppDispatch,useAppSelector } from '../hooks/redux';
 import { getIncome } from '../service/incomeService';
 import { addIncome } from '../store/incomeSlice';
-import { addBudget } from '../store/budgetSettingsSlice';
+import { useNavigate } from 'react-router-dom';
 const BudgetSettings = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const monthlyIncome = useAppSelector((state: any) => state.income.totalIncome);
 
@@ -41,7 +42,7 @@ const BudgetSettings = () => {
       const data = await createBudget(formData);
       if (data?.success) {
         toast.success(data.message);
-        dispatch(addBudget(formData));
+        navigate('/dashboard');
       } else {
         throw new Error(data?.message || 'Unknown error');
       }

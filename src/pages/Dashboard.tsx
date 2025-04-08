@@ -4,16 +4,23 @@ import BudgetCard from '../components/dashboard/BudgetCard';
 import TransactionList from '../components/transactions/TransactionList';
 import { AlertTriangle } from 'lucide-react';
 import TransactionLoading from '../components/common/TransactionLoading';
-import { transactionFetch } from '../Fetch/transactionFetch';
+import { transactionFetch } from '../Actions/transactionFetch';
 import calculateData from '../utils/calculateData';
 import { calculateDataState } from "../store/caculcatedDataSlice"
-import { getBudgetFetch } from "../Fetch/budgetFetch";
+import { getBudgetFetch } from "../Actions/budgetFetch";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
   const currentDate = useMemo(() => {
     return new Date();
   }, []);
+
+  // dispatch the calculated data
+  useEffect(() => {
+    dispatch(transactionFetch(currentDate));
+    dispatch(calculateDataState(calculatedData));
+    getBudgetFetch(dispatch);
+  }, [dispatch, currentDate]);
 
   const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
   const budgetState = useAppSelector((state) => state.budgetSettings);
@@ -22,12 +29,6 @@ const Dashboard = () => {
     return calculateData(transactions[0] || {}, budgetState || {});
   }, [transactions, budgetState]);
 
-  // dispatch the calculated data
-  useEffect(() => {
-    dispatch(transactionFetch(currentDate));
-    dispatch(calculateDataState(calculatedData));
-    getBudgetFetch(dispatch);
-  }, [dispatch, currentDate]);
 
   if (loading) {
     return (

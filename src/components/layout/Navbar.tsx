@@ -9,30 +9,34 @@ import {
   UserCircle,
   Wallet
 } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { LogOut } from '../../store/authSlice';
+import { useAppDispatch } from '../../hooks/redux';
+import { logoutUserAction } from '@/Actions/logoutAction';
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const storedToken = localStorage.getItem('token');
 
-  const isActive = (path: string) =>
-    location.pathname === path ? 'bg-blue-700 text-white' : 'hover:bg-blue-500';
+  // Updated to match nested dashboard routes
+  const isActive = (path: string) => {
+    const currentPath = location.pathname;
+    // Check if current path starts with the nav item path
+    return currentPath.startsWith(path) ? 'bg-blue-700 text-white' : 'hover:bg-blue-500';
+  };
 
   const handleLogout = () => {
-    dispatch(LogOut());
-    localStorage.removeItem('token');
+    logoutUserAction(dispatch);
     navigate('/login');
   };
 
+  // Updated paths to include /dashboard prefix
   const authNavItems = [
-    { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/add', icon: PlusCircle, label: 'Add' },
-    { path: '/history', icon: History, label: 'History' },
-    { path: '/settings', icon: Wallet, label: 'Set Budget' },
-    { path: '/profile', icon: UserCircle, label: '' },
+    { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/dashboard/add', icon: PlusCircle, label: 'Add' },
+    { path: '/dashboard/history', icon: History, label: 'History' },
+    { path: '/dashboard/settings', icon: Wallet, label: 'Set Budget' },
+    { path: '/dashboard/profile', icon: UserCircle, label: '' },
   ];
 
   const guestNavItems = [
@@ -46,7 +50,7 @@ const Navbar = () => {
     <nav className="bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="font-bold text-xl">Mero Budget</Link>
+          <Link to={storedToken ? "/dashboard" : "/"} className="font-bold text-xl">Mero Budget</Link>
 
           <div className="hidden md:flex space-x-4 items-center">
             {navToRender.map(({ path, icon: Icon, label }) => (

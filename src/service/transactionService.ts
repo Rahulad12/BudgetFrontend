@@ -28,7 +28,6 @@ export const getTransaction = async (): Promise<Transaction> => {
 export const getMonthlyTransaction = async (): Promise<MonthlyTransactionResponse> => {
     try {
         const res = await api.get<MonthlyTransactionResponse>(`${MONTHLY_TRANSACTION_URL}`);
-        console.log(res.data);
         return res.data;
     } catch (error: any) {
         console.error(error);

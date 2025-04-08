@@ -3,7 +3,7 @@ import { updateUser, passwordChange } from "../service/authService"
 import { useAppDispatch, useAppSelector } from "../hooks/redux"
 import { User, Lock, Edit, X } from 'lucide-react';
 import { toast } from "react-toastify";
-import { fetchUser } from "../Fetch/FetchUser";
+import { fetchUser } from "../Actions/FetchUser";
 import ProfileLoading from "../components/common/ProfileLoading";
 const Profile = () => {
     const dispatch = useAppDispatch();
