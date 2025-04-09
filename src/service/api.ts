@@ -17,10 +17,21 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use((response) => {
-    if (response.status === 401 || response.status === 403 || response.status === 500) {
-        localStorage.removeItem("token");
-    }
     return response
-})
+},
+    (error) => {
+        console.error(error);
+        if (error.response) {
+            const status = error.response.status;
+            if (status === 401 || status === 403 || status === 404 || status === 500) {
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
+        } else {
+            console.error("Network/Request error", error.message);
+
+        }
+        return Promise.reject(error);
+    })
 
 export default api;
