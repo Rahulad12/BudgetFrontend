@@ -2,7 +2,7 @@ import { useAppSelector } from "../../hooks/redux";
 
 const TransactionList = () => {
   const { items: transactions } = useAppSelector((state) => state.transactions);
-  
+
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">

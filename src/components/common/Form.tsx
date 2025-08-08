@@ -55,6 +55,7 @@ const Form = ({ submitHandler, formType }: FormProps) => {
                         minLength={3}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                     />
+                    {formType === 'login' && <small className="text-xs text-gray-500 mt-2">You can use both email or username to login</small>}
                 </div>
 
                 {shouldShowEmail && (
